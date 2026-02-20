@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,7 +76,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': config('DB_NAME'),
     }
 }
 
@@ -104,14 +105,137 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR / 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
+
+# AUTH_USER_MODEL = "account.User"
+# AUTHENTICATION_BACKENDS = [
+#     "django.contrib.auth.backends.ModelBackend",
+#     "account.authentication.EmailAuthBackend",
+# ]
+
+# Email send # settings.py
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ============================= logging =================================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {name} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname}: {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'simple',
+        },
+
+        # Only DEBUG logs
+        'file_debug': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'delay': True,
+        },
+
+        # Only INFO logs
+        'file_info': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'filename': os.path.join(BASE_DIR, 'logs/info.log'),
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'delay': True,
+        },
+
+        # Only WARNING logs
+        'file_warning': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'WARNING',
+            'filename': os.path.join(BASE_DIR, 'logs/warning.log'),
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'delay': True,
+        },
+
+        # Only ERROR logs
+        'file_error': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'ERROR',
+            'filename': os.path.join(BASE_DIR, 'logs/error.log'),
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'delay': True,
+        },
+
+        # Only CRITICAL logs
+        'file_critical': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'CRITICAL',
+            'filename': os.path.join(BASE_DIR, 'logs/critical.log'),
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+            'delay': True,
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+
+        'project': {
+            'handlers': [
+                'console',
+                'file_debug',
+                'file_info',
+                'file_warning',
+                'file_error',
+                'file_critical',
+            ],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}
