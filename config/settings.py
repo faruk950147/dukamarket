@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account.apps.AccountConfig',
+    # 'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -121,10 +121,10 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
 # AUTH_USER_MODEL = "account.User"
-# AUTHENTICATION_BACKENDS = [
-#     "django.contrib.auth.backends.ModelBackend",
+AUTHENTICATION_BACKENDS = [
+     "django.contrib.auth.backends.ModelBackend",
 #     "account.authentication.EmailAuthBackend",
-# ]
+]
 
 # Email send # settings.py
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
