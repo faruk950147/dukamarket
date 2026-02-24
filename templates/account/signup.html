@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block main_content %}
+
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100"
+     style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                 url('https://static.vecteezy.com/system/resources/thumbnails/038/535/076/small/ai-generated-empty-dark-workspace-tabletop-modern-design-with-copy-space-and-decor-photo.jpg') no-repeat center center; background-size: cover;">
+
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width:850px; width:100%;">
+        <div class="row g-0">
+
+            <!-- Left Image Section -->
+            <div class="col-md-6 d-none d-md-block position-relative">
+                <img src="https://plus.unsplash.com/premium_photo-1661407772941-c5a2a5c9595b?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFyayUyMG9mZmljZXxlbnwwfHwwfHx8MA%3D%3D"
+                     class="img-fluid h-100 w-100 object-fit-cover"
+                     alt="Register Image">
+                <!-- Gradient Overlay -->
+                <div class="position-absolute top-0 start-0 w-100 h-100"
+                     style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));">
+                </div>
+
+                <div class="position-absolute top-50 start-50 translate-middle text-white text-center px-4">
+                    <h3 class="fw-bold">Welcome to Our Platform</h3>
+                    <p class="small">
+                        Please register using your personal information
+                        to get started with us.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Form Section -->
+            <div class="col-md-6 p-5 position-relative" style="background-color: #f8f9fa;">
+
+                <h4 class="text-center fw-bold mb-4">SIGN UP</h4>
+
+                <form method="POST" class="mb-3">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <input type="email" name="login"
+                            class="form-control form-control-lg rounded-pill"
+                            placeholder="Email" required>
+                    </div>
+
+                    <div class="mb-3 input-group">
+                        <input type="password" name="password"
+                            class="form-control form-control-lg rounded-pill"
+                            placeholder="Password" required>
+                        <span class="input-group-text bg-white border-start-0 rounded-pill">
+                            <i class="bi bi-eye"></i>
+                        </span>
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-info w-100 text-white fw-bold py-2 mb-3 rounded-pill">
+                        Sign Up Now
+                    </button>
+                </form>
+
+                <!-- Social Login Buttons -->
+                <div class="text-center mt-4">
+                    <p class="small text-muted">Or login with</p>
+                    <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                        <a href=""
+                           class="btn btn-outline-danger rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-google me-2"></i>
+                        </a>
+
+                        <a href=""
+                           class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-facebook me-2"></i>
+                        </a>
+
+                        <a href=""
+                           class="btn btn-outline-dark rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-github me-2"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="text-center small mt-3">
+                    have an account?
+                    <a href="{% url 'login' %}" class="text-info text-decoration-none fw-bold">
+                        Login Here
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock main_content %}

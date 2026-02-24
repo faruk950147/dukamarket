@@ -1,0 +1,15 @@
+__pycache__
+.env
+env
+env312
+node_modules
+dist
+build
+coverage
+*.log
+*.tmp
+.DS_Store
+.idea
+.vscode
+*.suo
+db.sqlite3
