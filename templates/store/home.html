@@ -3,9 +3,183 @@
 {% block title %}Home{% endblock %}
 
 {% block main_content %}
-<main class="main">
+<!-- Features Section -->
+<section class="features__area pt-20">
     <div class="container">
-        <h1 class="mb-4">Welcome to the Store</h1>
+        <div class="row gx-0">
+            <div class="col">
+                <div class="features__item d-flex white-bg">
+                    <div class="features__icon mr-20">
+                        <img src="media/defaults/default.jpg" alt="Payment Method" style="width: 50px; height: 40px; object-fit: cover;">
+                    </div>
+                    <div class="features__content">
+                        <h6>Fast Payment</h6>
+                        <p>24/7 Support</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="features__item d-flex white-bg">
+                    <div class="features__icon mr-20">
+                        <img src="media/defaults/default.jpg" alt="Payment Method" style="width: 50px; height: 40px; object-fit: cover;">
+                    </div>
+                    <div class="features__content">
+                        <h6>Secure Checkout</h6>
+                        <p>Safe & Easy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
+</section>
+
+<!-- Top Deals Section -->
+<section class="topsell__area-1 pt-15">
+    <div class="container">
+        <h5>Top Deals Of The Day</h5>
+        <div class="product-slider swiper-container">
+            <div class="swiper-wrapper">
+                <div class="product__item swiper-slide">
+                    <div class="product__thumb fix">
+                        <div class="product-image w-img">
+                            <a href="product-detail.html">
+                                <img src="media/defaults/default.jpg" alt="Product 1" style="width:260px;height:300px;object-fit:cover;">
+                            </a>
+                        </div>
+                        <div class="product__offer"><span class="discount">-10%</span></div>
+                        <div class="product-action">
+                            <a href="#" class="icon-box icon-box-1 quick-view-btn"><i class="fal fa-eye"></i></a>
+                            <a href="#" class="icon-box icon-box-1 add-to-wish"><i class="fal fa-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="product__content">
+                        <h6><a href="product-detail.html">Product 1 Title</a></h6>
+                        <div class="rating mb-5">
+                            <ul>
+                                <i class="fa fa-star" style="color:#FFD700;"></i>
+                                <i class="fa fa-star" style="color:#FFD700;"></i>
+                                <i class="fa fa-star" style="color:#FFD700;"></i>
+                                <i class="fa fa-star-o" style="color:#FFD700;"></i>
+                                <i class="fa fa-star-o" style="color:#FFD700;"></i>
+                            </ul>
+                            <span>(10 reviews)</span>
+                        </div>
+                        <div class="price mb-10"><span>500 TK <del class="text-danger">600 TK</del></span></div>
+                        <div class="progress mb-5"><div class="progress-bar bg-primary" style="width:50%"></div></div>
+                        <div class="progress-rate"><span>Sold 50</span></div>
+                    </div>
+                </div>
+                <!-- আরও products এখানে -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banner Section -->
+<section class="banner__area pt-60 pb-25">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4 col-lg-6">
+                <div class="banner__item p-relative w-img mb-30">
+                    <div class="banner__img">
+                        <a href="product-detail.html"><img src="media/defaults/default.jpg" alt="Promo 1" style="width:500px;height:300px;object-fit:cover;"></a>
+                    </div>
+                    <div class="banner__content text-center">
+                        <a href="product-detail.html" class="st-btn">Promo Title 1</a>
+                        <p>20% Off Product 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Selling Products -->
+<section class="topsell__area-2 pt-15">
+    <div class="container">
+        <h5>Top Selling Products</h5>
+        <div class="product-slider-2 swiper-container">
+            <div class="swiper-wrapper">
+                <div class="product__item swiper-slide">
+                    <div class="product__thumb fix">
+                        <div class="product-image w-img">
+                            <a href="product-detail.html">
+                                <img src="media/defaults/default.jpg" alt="Product 2" style="width:260px;height:300px;object-fit:cover;">
+                            </a>
+                        </div>
+                        <div class="product__offer"><span class="discount">-15%</span></div>
+                        <div class="product-action">
+                            <a href="#" class="icon-box icon-box-1 quick-view-btn"><i class="fal fa-eye"></i></a>
+                            <a href="#" class="icon-box icon-box-1 add-to-wish"><i class="fal fa-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="product__content">
+                        <h6><a href="product-detail.html">Top Product 2</a></h6>
+                        <div class="price mb-10"><span>700 TK <del class="text-danger">800 TK</del></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured light-bg pt-55 pb-40">
+    <div class="container">
+        <h5>Top Featured Products</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="single-features-item b-radius mb-20">
+                    <div class="features-product-image w-img">
+                        <a href="product-detail.html"><img src="media/defaults/default.jpg" alt="Featured 1" style="width:300px;height:350px;object-fit:cover;"></a>
+                    </div>
+                    <h6><a href="product-detail.html">Featured Product 1</a></h6>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="single-features-item b-radius mb-20">
+                            <div class="features-product-image w-img">
+                                <a href="product-detail.html"><img src="media/defaults/default.jpg" alt="Featured 2" style="width:130px;height:200px;object-fit:cover;"></a>
+                            </div>
+                            <h6><a href="product-detail.html">Featured Product 2</a></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trending Products -->
+<section class="trending-product-area">
+    <div class="container">
+        <h5>Trending Products</h5>
+        <div class="product-slider-3 swiper-container">
+            <div class="swiper-wrapper">
+                <div class="product__item swiper-slide">
+                    <div class="product__thumb fix">
+                        <div class="product-image w-img">
+                            <a href="product-detail.html"><img src="media/defaults/default.jpg" alt="Trending 1" style="width:260px;height:300px;object-fit:cover;"></a>
+                        </div>
+                        <h6><a href="product-detail.html">Trending Product 1</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Brands Section -->
+<section class="brand-area brand-area-d">
+    <div class="container">
+        <div class="brand-slider swiper-container pt-50 pb-45">
+            <div class="swiper-wrapper">
+                <div class="brand-item swiper-slide"><img src="media/defaults/default.jpg" alt="Brand 1" style="width:200px;height:70px;object-fit:cover;"></div>
+                <div class="brand-item swiper-slide"><img src="media/defaults/default.jpg" alt="Brand 2" style="width:200px;height:70px;object-fit:cover;"></div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock main_content %}
