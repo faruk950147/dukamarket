@@ -2,7 +2,7 @@
 
 {% block title %}Sign Up{% endblock %}
 
-{% block main_content %}
+{% block content %}
 
 <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100"
      style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
@@ -63,22 +63,20 @@
                 <div class="text-center mt-4">
                     <p class="small text-muted">Or login with</p>
                     <div class="d-flex justify-content-center flex-wrap gap-2">
-
-                        <a href=""
-                           class="btn btn-outline-danger rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-google me-2"></i>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}" 
+                        class="btn btn-outline-danger rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-google"></i>
                         </a>
 
-                        <a href=""
-                           class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-facebook me-2"></i>
+                        <a href="#" 
+                        class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-facebook-f"></i>
                         </a>
 
-                        <a href=""
-                           class="btn btn-outline-dark rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-github me-2"></i>
+                        <a href="#" 
+                        class="btn btn-outline-dark rounded-pill px-4 py-2 d-flex align-items-center justify-content-center">
+                            <i class="fab fa-github"></i>
                         </a>
-
                     </div>
                 </div>
 
@@ -95,4 +93,4 @@
 
 </div>
 
-{% endblock main_content %}
+{% endblock content %}

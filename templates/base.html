@@ -12,7 +12,8 @@
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <!-- Place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static "assets/img/favicon.png" %}">
     <!-- CSS here -->
@@ -149,7 +150,7 @@
 
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
                                             {% if request.user.is_authenticated %}
-                                                <li><a class="dropdown-item {% if request.resolver_match.url_name == "account" %}active{% endif %}" href="{% url 'account' %}">Account</a></li>
+                                                <li><a class="dropdown-item ">Account</a></li>
                                             {% else %}
                                                 <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
                                                 <li><a class="dropdown-item" href="{% url 'signup' %}">Sign Up</a></li>
