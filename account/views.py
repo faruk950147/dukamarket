@@ -49,7 +49,6 @@ class LoginView(LogoutRequiredMixin, View):
             messages.error(request, 'Please correct the errors below.')
             logger.info("Sign-in form invalid")
         return render(request, 'account/sign-in.html', {'form': form})
-       
 
 @method_decorator(never_cache, name='dispatch')
 class LogoutView(LoginRequiredMixin, View):
