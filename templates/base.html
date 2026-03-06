@@ -150,7 +150,8 @@
 
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
                                             {% if request.user.is_authenticated %}
-                                                <li><a class="dropdown-item ">Account</a></li>
+                                                <li><a href="" class="dropdown-item">Account</a></li>
+                                                <li><a href="{% url "logout" %}" class="dropdown-item">Logout</a></li>
                                             {% else %}
                                                 <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
                                                 <li><a class="dropdown-item" href="{% url 'signup' %}">Sign Up</a></li>
