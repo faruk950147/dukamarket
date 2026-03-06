@@ -126,11 +126,11 @@ STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
-# AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "account.User"
 AUTHENTICATION_BACKENDS = [
-    "social_core.backends.google.GoogleOAuth2", 
-    "django.contrib.auth.backends.ModelBackend",
-    # "account.backends.EmailBackend",
+    'social_core.backends.google.GoogleOAuth2', 
+    'django.contrib.auth.backends.ModelBackend',
+    'account.backends.EmailOrPhoneBackend'
 ]
 
 # Social Auth Pipeline
