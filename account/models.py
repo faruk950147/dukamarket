@@ -46,7 +46,6 @@ class Manager(BaseUserManager):
         return self.create_user(username, password, email, phone, **extra_fields)
 
 
-
 # Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True, validators=[UnicodeUsernameValidator()])
