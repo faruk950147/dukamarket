@@ -77,7 +77,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         ordering = ['id']
         verbose_name_plural = '01. Users'
-
+        
+    @property
     def image_tag(self):
         img = getattr(self, 'image', None)
         if img and hasattr(img, 'url'):
