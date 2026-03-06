@@ -14,13 +14,9 @@ phone_validator = RegexValidator(
 
 # User Manager
 class Manager(BaseUserManager):
-
     def create_user(self, username, password=None, email=None, phone=None, **extra_fields):
         if not username:
             raise ValueError("Username must be set")
-
-        if not password:
-            raise ValueError("Password must be set")
 
         if not email and not phone:
             raise ValueError("Email or Phone must be set")
@@ -30,9 +26,13 @@ class Manager(BaseUserManager):
 
         user = self.model(username=username, email=email, phone=phone, **extra_fields)
 
-        user.set_password(password)
-        user.save(using=self._db)
+        if password:
+            user.set_password(password)
+        else:
+            # social login for no password unusable password set 
+            user.set_unusable_password()
 
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, username, password=None, email=None, phone=None, **extra_fields):
