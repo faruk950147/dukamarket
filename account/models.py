@@ -79,7 +79,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             models.Index(fields=['country', 'city']),
         ]
 
-
     @property
     def image_tag(self):
         # getattr() returns the value of an attribute.
