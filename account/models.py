@@ -4,20 +4,17 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import RegexValidator
 from django.utils.html import mark_safe
 
-
 # Phone Validator
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$",
     "The phone number provided is invalid"
 )
 
-
 # User Manager
 class Manager(BaseUserManager):
     def create_user(self, username, password=None, email=None, phone=None, **extra_fields):
         if not username:
             raise ValueError("Username must be set")
-
         if not email and not phone:
             raise ValueError("Email or Phone must be set")
 
@@ -29,8 +26,7 @@ class Manager(BaseUserManager):
         if password:
             user.set_password(password)
         else:
-            # social login for no password unusable password set 
-            user.set_unusable_password()
+            user.set_unusable_password()  # social login etc.
 
         user.save(using=self._db)
         return user
@@ -48,10 +44,14 @@ class Manager(BaseUserManager):
 
 # Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150, unique=True, validators=[UnicodeUsernameValidator()])
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[UnicodeUsernameValidator()]
+    )
     email = models.EmailField(unique=True, blank=True, null=True)
+    
     phone = models.CharField(max_length=20, validators=[phone_validator], unique=True, blank=True, null=True)
-
     image = models.ImageField(upload_to='user/', default='defaults/default.jpg')
     country = models.CharField(max_length=150, blank=True, null=True, db_index=True)
     city = models.CharField(max_length=150, blank=True, null=True, db_index=True)
@@ -68,12 +68,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = Manager()
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = []  # optional email/phone
 
     class Meta:
         ordering = ['id']
         verbose_name_plural = '01. Users'
-
         indexes = [
             models.Index(fields=['country', 'city']),
         ]
@@ -90,7 +89,6 @@ class User(AbstractBaseUser, PermissionsMixin):
                 f'<img src="{img.url}" style="max-width:50px; max-height:50px;" />'
             )
         return mark_safe('<span>No Image</span>')
-
 
     def __str__(self):
         return self.username
