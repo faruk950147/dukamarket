@@ -130,7 +130,7 @@ AUTH_USER_MODEL = "account.User"
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2', 
     'django.contrib.auth.backends.ModelBackend',
-    'account.backends.EmailOrPhoneBackend'
+    'account.backends.EmailOrPhoneBackend',
 ]
 
 # Social Auth Pipeline
