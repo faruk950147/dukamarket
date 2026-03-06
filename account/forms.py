@@ -49,7 +49,7 @@ class SignupForm(forms.ModelForm):
 
 # Login Form (Username / Email / Phone)
 class LoginForm(forms.Form):
-    login = forms.CharField(
+    username = forms.CharField(
         max_length=150,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username or Email or Phone'}),
         label="Username or Email or Phone"
@@ -66,10 +66,10 @@ class LoginForm(forms.Form):
 
         if username and password:
             # Try to find user by username / email / phone
-            user_qs = User.objects.filter(Q(username=username) | Q(email=username) | Q(phone=username))
-            if not user_qs.exists():
+            user = User.objects.filter(Q(username=username) | Q(email=username) | Q(phone=username))
+            if not user.exists():
                 raise forms.ValidationError("Invalid login credentials")
-            user = user_qs.first()
+            user = user.first()
             if not user.check_password(password):
                 raise forms.ValidationError("Invalid login credentials")
             if not user.is_active:
