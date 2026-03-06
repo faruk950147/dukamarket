@@ -5,17 +5,16 @@ from django.contrib import messages
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 
-
 # import from account app
 from account.forms import SignupForm, LoginForm
-
+from account.mixing import LoginRequiredMixin, LogoutRequiredMixin
 import logging
 logger = logging.getLogger('project') 
 
 # Create your views here.
 
 @method_decorator(never_cache, name='dispatch')
-class SignupView(View):
+class SignupView(LogoutRequiredMixin, View):
     def get(self, request):
         form = SignupForm()
         return render(request, 'account/signup.html', {'form': form})   
@@ -23,7 +22,7 @@ class SignupView(View):
         pass
    
 @method_decorator(never_cache, name='dispatch') 
-class LoginView(View):
+class LoginView(LogoutRequiredMixin, View):
     def get(self, request):
         form = LoginForm()
         return render(request, 'account/login.html', {'form': form})
@@ -53,7 +52,7 @@ class LoginView(View):
        
 
 @method_decorator(never_cache, name='dispatch')
-class LogoutView(View):
+class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('login')
