@@ -37,22 +37,7 @@
 
                     <form method="POST" class="mb-3">
                         {% csrf_token %}
-
-                        <div class="mb-3">
-                            <input type="email" name="login"
-                                class="form-control form-control-lg rounded-pill"
-                                placeholder="Email" required>
-                        </div>
-
-                        <div class="mb-3 input-group">
-                            <input type="password" name="password"
-                                class="form-control form-control-lg rounded-pill"
-                                placeholder="Password" required>
-                            <span class="input-group-text bg-white border-start-0 rounded-pill">
-                                <i class="bi bi-eye"></i>
-                            </span>
-                        </div>
-
+                        {{form.as_p}}
                         <div class="mb-3 text-end">
                             <a href="" class="text-decoration-none small text-info">
                                 Forgot password?
