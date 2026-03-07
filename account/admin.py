@@ -8,9 +8,9 @@ class UserAdmin(BaseUserAdmin):
                     'image_tag')
     search_fields = ('username', 'email', 'phone')
     ordering = ('id',)
-    # readonly_fields
+    # static readonly fields
     readonly_fields = ('image_tag',)
-    # fieldsets is impotence
+
     fieldsets = (
         (None, {'fields': ('username', 'email', 'phone', 'password', 'country', 
                            'city', 'home_city', 'zip_code', 'address', 'image_tag')}),
@@ -25,5 +25,13 @@ class UserAdmin(BaseUserAdmin):
                        'home_city', 'zip_code', 'address', 'image_tag'),
         }),
     )
+
+    # dynamic readonly fields
+    def get_readonly_fields(self, request, obj=None):
+        # if obj exists (i.e., edit mode)
+        if obj:
+            # you can add more fields here
+            return self.readonly_fields + ('username', 'email')
+        return self.readonly_fields  # new create
 
 admin.site.register(User, UserAdmin)
