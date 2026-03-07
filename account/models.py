@@ -50,8 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         validators=[UnicodeUsernameValidator()]
     )
     email = models.EmailField(unique=True, blank=True, null=True)
-    
     phone = models.CharField(max_length=20, validators=[phone_validator], unique=True, blank=True, null=True)
+    
     image = models.ImageField(upload_to='user/', default='defaults/default.jpg')
     country = models.CharField(max_length=150, blank=True, null=True, db_index=True)
     city = models.CharField(max_length=150, blank=True, null=True, db_index=True)
