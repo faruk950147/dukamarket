@@ -11,47 +11,36 @@ from account.mixing import LoginRequiredMixin, LogoutRequiredMixin
 import logging
 logger = logging.getLogger('project') 
 
-# Create your views here.
 
+# Signup View
 @method_decorator(never_cache, name='dispatch')
-class SignupView(LogoutRequiredMixin, View):
+class SignupView(View):
     def get(self, request):
-        form = SignupForm()
-        return render(request, 'account/signup.html', {'form': form})   
-    def post(self, request):
-        pass
-   
-@method_decorator(never_cache, name='dispatch') 
-class LoginView(LogoutRequiredMixin, View):
-    def get(self, request):
-        form = LoginForm()
-        return render(request, 'account/login.html', {'form': form})
+        return render(request, 'account/signup.html')
     
     def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user:
-                if user.is_active:
-                    login(request, user)
-                    logger.info(f"User signed in: {user.username} ({user.id})")
-                    messages.success(request, f'Welcome back, {user.username}!')
-                    return redirect('home')
-                else:
-                    messages.error(request, 'Your account is not activated yet.')
-                    logger.warning(f"Inactive user attempted sign-in: {user.username} ({user.id})")
-            else:
-                messages.error(request, 'Invalid username or password.')
-                logger.warning(f"Failed sign-in attempt for username: {username}")
-        else:
-            messages.error(request, 'Please correct the errors below.')
-            logger.info("Sign-in form invalid")
-        return render(request, 'account/sign-in.html', {'form': form})
+        return render(request, 'account/signup.html')
 
+# Login View
 @method_decorator(never_cache, name='dispatch')
-class LogoutView(LoginRequiredMixin, View):
+class LoginView(View):
     def get(self, request):
-        logout(request)
+        return render(request, 'account/login.html')
+    
+    def post(self, request):
+        return render(request, 'account/login.html')
+
+# Logout View
+@method_decorator(never_cache, name='dispatch')
+class LogoutView(View):
+    def get(self, request):
+        try:
+            logout(request)
+            logger.info(f"User logged out: {request.user.username} ({request.user.id})")
+            messages.success(request, "You have been logged out successfully.")
+        except Exception as e:
+            logger.error(f"Logout error: {e}")
+            messages.error(request, f"Logout error: {e}")
         return redirect('login')
+
+
