@@ -16,18 +16,22 @@ logger = logging.getLogger('project')
 @method_decorator(never_cache, name='dispatch')
 class SignupView(View):
     def get(self, request):
+        
         return render(request, 'account/signup.html')
     
     def post(self, request):
+        
         return render(request, 'account/signup.html')
 
 # Login View
 @method_decorator(never_cache, name='dispatch')
 class LoginView(View):
     def get(self, request):
+        
         return render(request, 'account/login.html')
     
     def post(self, request):
+        
         return render(request, 'account/login.html')
 
 # Logout View
@@ -37,7 +41,7 @@ class LogoutView(View):
         try:
             logout(request)
             logger.info(f"User logged out: {request.user.username} ({request.user.id})")
-            messages.success(request, "You have been logged out successfully.")
+            messages.success(request, f"{request.user.username} have been logged out successfully.")
         except Exception as e:
             logger.error(f"Logout error: {e}")
             messages.error(request, f"Logout error: {e}")

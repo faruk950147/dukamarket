@@ -12,6 +12,8 @@ logger = logging.getLogger('project')
 @method_decorator(never_cache, name='dispatch')
 class HomeView(View):
     def get(self, request):
+        logger.info(f"")
+        messages.success(request, f'Home page loaded')
         return render(request, 'store/home.html')
     
 class ProductDetailView(LoginRequiredMixin, View):
