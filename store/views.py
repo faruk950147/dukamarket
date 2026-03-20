@@ -16,7 +16,7 @@ class HomeView(View):
         return render(request, 'store/home.html')
 
 @method_decorator(never_cache, name='dispatch')
-class ProductView(View):
+class ProductDetailView(View):
     def get(self, request):
         logger.info(f"Product page accessed by user: {request.user.username}")
         messages.success(request, f'Product details page loaded for user: {request.user.username}')
