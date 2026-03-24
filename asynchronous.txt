@@ -7,17 +7,37 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-@method_decorator(never_cache, name='dispatch')
+async এর মানে হলো asynchronous, অর্থাৎ “একসাথে বা পেছনের কাজের সঙ্গে হস্তক্ষেপ না করে কাজ করা।”
+
+সাধারণ Python ফাংশন যেমন:
+
+def normal_function():
+    print("Hello")
+
+এটি synchronous, অর্থাৎ ধাপে ধাপে কাজ করে। কোনো কাজ শেষ না হলে পরবর্তী কাজ শুরু হয় না।
+
+আর async function হয় এভাবে:
+
+import asyncio
+
+async def async_function():
+    print("Start")
+    await asyncio.sleep(2)  # ২ সেকেন্ড অপেক্ষা করবে কিন্তু ব্লক করবে না
+    print("End")
+পার্থক্য:
+Synchronous (normal) – একটার কাজ শেষ না হলে পরেরটা শুরু হয় না।
+Asynchronous (async) – কোনো কাজ চলাকালীন অন্য কাজও করতে পারি।
+
+উদাহরণ Django-তে:
+
+from django.views import View
+
 class HomeView(View):
     async def get(self, request):
-        # ইউজার যদি লগইন করা থাকে, নাম নাও, নাহলে 'Guest'
-        username = request.user.username if request.user.is_authenticated else 'Guest'
-        
-        # লগিং (asynchronous না হলেও চলবে)
-        logger.info(f"হোম পেজে ইউজার অ্যাক্সেস করেছেন: {username}")
-        
-        # ম্যাসেজ দেখানো
-        messages.success(request, f'স্টোরে স্বাগতম, {username}!')
-        
-        # template রেন্ডার করা (async compatible)
-        return render(request, 'store/home.html', {})
+        # এখানে তুমি অন্য async কাজ করতে পারবে, যেমন API call
+        return render(request, 'home.html')
+যদি তুমি ১০ জন ইউজার একই সময়ে হোম পেজে আসে, async view সবকিছুকে efficiently হ্যান্ডেল করতে পারে।
+Synchronous view ১০ জনের জন্য sequentially কাজ করবে, তাই slow হবে।
+
+সহজভাবে:
+async = একসাথে একাধিক কাজ করতে পারা, wait করার সময় সার্ভার free রাখা।
