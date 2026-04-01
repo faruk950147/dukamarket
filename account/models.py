@@ -5,10 +5,7 @@ from django.core.validators import RegexValidator
 from django.utils.html import mark_safe
 
 # Phone Validator
-phone_validator = RegexValidator(
-    r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$",
-    "The phone number provided is invalid"
-)
+phone_validator = RegexValidator( r"^\+?\d{10,15}$", "Enter a valid phone number" )
 
 # User Manager
 class Manager(BaseUserManager):
@@ -72,7 +69,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         ordering = ['id']
+        verbose_name = '01. User'
         verbose_name_plural = '01. Users'
+        db_table = 'user'
+        
         indexes = [
             models.Index(fields=['country', 'city']),
         ]
