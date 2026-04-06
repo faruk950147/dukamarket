@@ -2,9 +2,10 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from account.models import OTP
 from account.tasks import send_otp_email_web
 from rest_framework_simplejwt.tokens import RefreshToken
+import random
+from datetime import timedelta
 
 User = get_user_model()
 
@@ -47,9 +48,7 @@ class SignupForm(forms.ModelForm):
         if commit:
             user.save()
             # Remove old OTPs because we are creating new one so old one is not needed
-            OTP.objects.filter(user=user, otp_type="register").delete()
-            # Create new OTP with expiration time
-            _, otp = OTP.create_otp(user, "register")
+            otp = random.randint(100000, 999999)
             send_otp_email_web.delay(user.email, otp)
         return user
 
