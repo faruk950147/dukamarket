@@ -1,4 +1,3 @@
-# account/backends.py
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -6,9 +5,6 @@ from django.db.models import Q
 User = get_user_model()
 
 class EmailOrPhoneBackend(ModelBackend):
-    """
-    Login using email OR phone OR username
-    """
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = User.objects.get(
