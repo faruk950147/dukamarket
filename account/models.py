@@ -122,6 +122,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
+        verbose_name = "01 User"
+        verbose_name_plural = "01 Users"
         db_table = "user"
         ordering = ["-created_at"]
         constraints = [

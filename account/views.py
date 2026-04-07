@@ -10,7 +10,7 @@ import logging
 
 # Import from local
 from account.mixing import LoginRequiredMixin, LogoutRequiredMixin
-from account.forms import SignupForm, OTPVerifyForm, LoginForm
+from account.forms import *
 
 logger = logging.getLogger('project')
 
@@ -20,16 +20,11 @@ logger = logging.getLogger('project')
 @method_decorator(never_cache, name='dispatch')
 class SignupView(LogoutRequiredMixin, View):
     def get(self, request):
-        form = SignupForm()
-        return render(request, 'account/signup.html', {'form': form})
+        return render(request, 'account/signup.html')
 
     def post(self, request):
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, "Account created. Please verify OTP sent to your email.")
-            return redirect('otp_verify')
-        return render(request, 'account/signup.html', {'form': form})
+
+        return render(request, 'account/signup.html')
 
 
 # =========================
@@ -38,18 +33,11 @@ class SignupView(LogoutRequiredMixin, View):
 @method_decorator(never_cache, name='dispatch')
 class OTPVerifyView(LogoutRequiredMixin, View):
     def get(self, request):
-        form = OTPVerifyForm()
-        return render(request, 'account/otp_verify.html', {'form': form})
+        return render(request, 'account/otp_verify.html')
 
     def post(self, request):
-        form = OTPVerifyForm(request.POST)
-        if form.is_valid():
-            user = form.cleaned_data['user']
-            login(request, user)  # Login user after OTP verified
-            messages.success(request, "OTP verified successfully. You are now logged in.")
-            logger.info(f"User verified and logged in: {user.username} ({user.id})")
-            return redirect(settings.LOGIN_REDIRECT_URL)  # e.g., dashboard
-        return render(request, 'account/otp_verify.html', {'form': form})
+
+        return render(request, 'account/otp_verify.html')
 
 
 # =========================
@@ -58,18 +46,11 @@ class OTPVerifyView(LogoutRequiredMixin, View):
 @method_decorator(never_cache, name='dispatch')
 class LoginView(LogoutRequiredMixin, View):
     def get(self, request):
-        form = LoginForm()
-        return render(request, 'account/login.html', {'form': form})
+        return render(request, 'account/login.html')
 
     def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = form.cleaned_data['user']
-            login(request, user)
-            messages.success(request, f"Welcome back, {user.username}!")
-            logger.info(f"User logged in: {user.username} ({user.id})")
-            return redirect(settings.LOGIN_REDIRECT_URL)
-        return render(request, 'account/login.html', {'form': form})
+
+        return render(request, 'account/login.html')
 
 
 # =========================
@@ -94,22 +75,8 @@ class LogoutView(View):
 # =========================
 class ResendOTPView(View):
     def get(self, request, *args, **kwargs):
-        form = ResendOTPForm()
-        return render(request, "resend_otp.html", {"form": form})
+        pass
     
     def post(self, request, *args, **kwargs):
-        form = ResendOTPForm(request.POST)
-        if form.is_valid():
-            # OTP already sent inside form's clean_email
-            return JsonResponse({
-                "status": "success",
-                "message": "New OTP has been sent to your email."
-            })
-        else:
-            # Return first validation error
-            error_msg = next(iter(form.errors.values()))[0]
-            return JsonResponse({
-                "status": "error",
-                "message": error_msg
-            })
+        pass
 
