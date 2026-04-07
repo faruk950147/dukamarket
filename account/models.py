@@ -2,12 +2,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import RegexValidator
-from django.utils.html import mark_safe
+from django.utils.html import format_html
+from django.utils import timezone
+from django.db.models import Q
+
 
 # =========================
 # Validators
 # =========================
-phone_validator = RegexValidator(r"^\+?\d{10,15}$", "Enter a valid phone number")
+phone_validator = RegexValidator(
+    r"^\+?\d{10,15}$",
+    "Enter a valid phone number"
+)
 
 
 # =========================
@@ -16,20 +22,25 @@ phone_validator = RegexValidator(r"^\+?\d{10,15}$", "Enter a valid phone number"
 class Manager(BaseUserManager):
 
     def normalize_phone(self, phone):
-        phone = phone.replace(" ", "").strip()
-        if phone.startswith("+880"):
+        if not phone:
+            return phone
+
+        phone = phone.replace(" ", "").replace("-", "").strip()
+
+        if phone.startswith("+"):
             return phone
         if phone.startswith("880"):
-            return "+" + phone
-        if phone.startswith("01"):
-            return "+880" + phone[1:]
+            return f"+{phone}"
+        if phone.startswith("0"):
+            return f"+880{phone[1:]}"
         return phone
 
     def create_user(self, username, email=None, phone=None, password=None, **extra_fields):
         if not username:
             raise ValueError("Username required")
+
         if not email and not phone:
-            raise ValueError("Either email or phone must be provided")
+            raise ValueError("Email or Phone required")
 
         if email:
             email = self.normalize_email(email)
@@ -42,28 +53,22 @@ class Manager(BaseUserManager):
             phone=phone,
             **extra_fields
         )
-        if password:
-            user.set_password(password)
-        else:
-            user.set_unusable_password()
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, username, email=None, phone=None, password=None, **extra_fields):
-        if not email:
-            email = 'demo@gmail.com'   # default
-        if not phone:
-            phone = '+8801000000000'   # default
+        if not email and not phone:
+            email = "admin@gmail.com"
+            phone = "+8801000000000"
 
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_verified", True)
 
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True")
+        if not password:
+            raise ValueError("Superuser must have password")
 
         return self.create_user(username, email, phone, password, **extra_fields)
 
@@ -72,43 +77,102 @@ class Manager(BaseUserManager):
 # User Model
 # =========================
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150, unique=True, validators=[UnicodeUsernameValidator()])
-    email = models.EmailField(unique=True, blank=True, null=True, db_index=True)
-    phone = models.CharField(max_length=15, unique=True, blank=True, null=True, validators=[phone_validator], db_index=True)
+
+    # Core
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[UnicodeUsernameValidator()],
+    )
+
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(
+        max_length=15,
+        blank=True,
+        null=True,
+        validators=[phone_validator]
+    )
 
     image = models.ImageField(upload_to="users/", blank=True, null=True)
 
-    country = models.CharField(max_length=150, blank=True, null=True, db_index=True)
-    city = models.CharField(max_length=150, blank=True, null=True, db_index=True)
+    # Location
+    country = models.CharField(max_length=150, blank=True, null=True)
+    city = models.CharField(max_length=150, blank=True, null=True)
     home_city = models.CharField(max_length=150, blank=True, null=True)
     zip_code = models.CharField(max_length=20, blank=True, null=True)
-    address = models.TextField(max_length=500, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
 
+    # Status
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    # Chat system
+    is_online = models.BooleanField(default=False)
+    last_seen = models.DateTimeField(blank=True, null=True)
+    last_active = models.DateTimeField(auto_now=True)
+
+    # Time
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = Manager()
 
     USERNAME_FIELD = "username"
-    
-    # optional email or phone provided
-    REQUIRED_FIELDS = []  
+    REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
         db_table = "user"
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["email"],
+                condition=Q(email__isnull=False),
+                name="unique_email_not_null"
+            ),
+            models.UniqueConstraint(
+                fields=["phone"],
+                condition=Q(phone__isnull=False),
+                name="unique_phone_not_null"
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["username"]),
+            models.Index(fields=["email"]),
+            models.Index(fields=["phone"]),
+            models.Index(fields=["created_at"]),
+        ]
 
     def __str__(self):
-        return self.username or str(self.id)
+        return self.username or f"User-{self.id}"
+
+    # =========================
+    # Utility Methods
+    # =========================
+    def get_identifier(self):
+        return self.email or self.phone or self.username
+
+    def mark_online(self):
+        self.__class__.objects.filter(pk=self.pk).update(
+            is_online=True,
+            last_seen=timezone.now()
+        )
+
+    def mark_offline(self):
+        self.__class__.objects.filter(pk=self.pk).update(
+            is_online=False,
+            last_seen=timezone.now()
+        )
 
     @property
     def image_tag(self):
         if self.image and hasattr(self.image, "url"):
-            return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
-        return mark_safe("<span>No Image</span>")
+            return format_html('<img src="{}" width="50" height="50" />', self.image.url)
+        return "No Image"
+
+    def save(self, *args, **kwargs):
+        if self.email:
+            self.email = self.__class__.objects.normalize_email(self.email)
+        if self.phone:
+            self.phone = self.__class__.objects.normalize_phone(self.phone)
+        super().save(*args, **kwargs)
