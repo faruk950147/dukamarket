@@ -189,7 +189,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "username", "email", "phone", "image_tag", "country", "city", "home_city", "zip_code", "address",
         "is_active", "is_staff", "is_verified", "is_superuser",
-        "online_status", "last_seen", "last_active",
+        "online_status", "last_seen",
         "created_at", "updated_at"
     )
 
@@ -203,14 +203,14 @@ class UserAdmin(BaseUserAdmin):
     ordering = ("-created_at",)
 
     # Fields that are readonly in detail view
-    readonly_fields = ("last_seen", "last_active", "image_tag", "created_at", "updated_at", "last_login")
+    readonly_fields = ("last_seen", "image_tag", "created_at", "updated_at", "last_login")
 
     # Grouping fields in the admin detail view
     fieldsets = (
         (None, {"fields": ("username", "email", "phone", "password")}),
         ("Profile Info", {"fields": ("image", "country", "city", "home_city", "zip_code", "address")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "is_verified", "groups", "user_permissions")}),
-        ("Status", {"fields": ("is_online", "last_seen", "last_active")}),
+        ("Status", {"fields": ("is_online", "last_seen")}),
         ("Important Dates", {"fields": ("last_login", "created_at", "updated_at")}),
     )
 
