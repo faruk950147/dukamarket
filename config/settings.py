@@ -136,7 +136,7 @@ AUTH_USER_MODEL = "account.User"
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',  # Google OAuth2 login
     'django.contrib.auth.backends.ModelBackend',  # Default
-    'account.backends.EmailOrPhoneBackend',  # Email/Phone login
+    'account.backends.AuthBackend',  # Email/Phone login
 ]
 
 SOCIAL_AUTH_PIPELINE = (

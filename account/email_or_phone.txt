@@ -110,7 +110,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Chat system
     is_online = models.BooleanField(default=False)
     last_seen = models.DateTimeField(blank=True, null=True)
-    last_active = models.DateTimeField(auto_now=True)
 
     # Time
     created_at = models.DateTimeField(auto_now_add=True)
