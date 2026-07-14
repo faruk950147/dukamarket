@@ -17,10 +17,16 @@ from store.models import (
 # ======================== CATEGORY ========================
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
     list_display = (
         'id', 'parent', 'title', 'slug', 'keyword',
-        'description', 'image_tag', 'is_featured',
+        'description', 'icon', 'image_tag', 'is_featured',
         'status', 'created_at', 'updated_at'
+    )
+    
+    list_editable = (
+        'is_featured',
+        'status',
     )
 
     search_fields = (
@@ -30,10 +36,6 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = (
         'status', 'is_featured'
     )
-
-    prepopulated_fields = {
-        'slug': ('title',)
-    }
 
     readonly_fields = (
         'created_at',
@@ -45,7 +47,7 @@ class CategoryAdmin(admin.ModelAdmin):
         (None, {
             "fields": (
                 'parent', 'title', 'slug',
-                'keyword', 'description',
+                'keyword', 'description', 'icon',
                 'image', 'is_featured',
                 'status',
             ),
@@ -55,11 +57,17 @@ class CategoryAdmin(admin.ModelAdmin):
 # ======================= BRAND ========================
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
     list_display = (
         'id', 'title', 'slug', 'keyword',
         'description', 'image_tag',
         'is_featured', 'status',
         'created_at', 'updated_at'
+    )
+    
+    list_editable = (
+        'is_featured',
+        'status',
     )
 
     search_fields = (
@@ -98,6 +106,10 @@ class ColorAdmin(admin.ModelAdmin):
         'color_tag', 'status',
         'created_at', 'updated_at'
     )
+    
+    list_editable = (
+        'status',
+    )
 
     search_fields = (
         'title', 'code'
@@ -128,6 +140,10 @@ class SizeAdmin(admin.ModelAdmin):
         'id', 'title', 'code',
         'status', 'created_at',
         'updated_at'
+    )
+    
+    list_editable = (
+        'status',
     )
 
     search_fields = (
@@ -185,6 +201,7 @@ class GalleryInline(admin.TabularInline):
 # ======================= PRODUCT ========================
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
     list_display = (
         'id', 'category', 'brand',
         'variants_type', 'title',
@@ -197,6 +214,16 @@ class ProductAdmin(admin.ModelAdmin):
         'deadline', 'is_deadline',
         'is_featured', 'status',
         'created_at', 'updated_at'
+    )
+    
+    list_editable = (
+        'category',
+        'brand',
+        'variants_type',
+        'stock',
+        'is_deadline',
+        'is_featured',
+        'status',
     )
 
     search_fields = (
@@ -218,18 +245,10 @@ class ProductAdmin(admin.ModelAdmin):
         'brand',
     )
 
-    prepopulated_fields = {
-        'slug': ('title',)
-    }
-
     inlines = [
         VariantOptionInline,
         GalleryInline,
     ]
-
-    list_editable = (
-        'stock',
-    )
 
     readonly_fields = (
         'created_at',
@@ -263,6 +282,10 @@ class GalleryAdmin(admin.ModelAdmin):
         'status', 'created_at',
         'updated_at'
     )
+    
+    list_editable = (
+        'status',
+    )
 
     search_fields = (
         'product__title',
@@ -295,6 +318,11 @@ class VariantOptionsAdmin(admin.ModelAdmin):
         'size', 'sku', 'variant_price',
         'stock', 'status',
         'created_at', 'updated_at'
+    )
+    
+    list_editable = (
+        'stock',
+        'status',
     )
 
     search_fields = (
@@ -340,6 +368,10 @@ class SliderAdmin(admin.ModelAdmin):
         'status', 'created_at',
         'updated_at'
     )
+    
+    list_editable = (
+        'status',
+    )
 
     search_fields = (
         'product__title',
@@ -378,6 +410,10 @@ class ReviewAdmin(admin.ModelAdmin):
         'rating', 'status',
         'created_at', 'updated_at'
     )
+    
+    list_editable = (
+        'status',
+    )
 
     search_fields = (
         'product__title',
@@ -413,6 +449,11 @@ class AllowPaymentAdmin(admin.ModelAdmin):
         'help_time', 'image_tag', 'is_featured',
         'status', 'created_at',
         'updated_at'
+    )
+    
+    list_editable = (
+        'is_featured',
+        'status',
     )
 
     search_fields = (
